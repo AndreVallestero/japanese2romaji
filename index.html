@@ -294,7 +294,8 @@
     "姉妹":["shi","mai"],"夫婦":["fu","u","fu"],"雰囲気":["fu","n","i","ki"],
     "泥棒":["do","ro","bou"],"合図":["a","i","zu"],"日本酒":["ni","hon","shu"],
     "来る":["ku","ru"],"来た":["ki","ta"],"来て":["ki","te"],"来ない":["ko","na","i"],
-    "来ます":["ki","ma","su"],"来ました":["ki","ma","shi","ta"]
+    "来ます":["ki","ma","su"],"来ました":["ki","ma","shi","ta"],
+    "大きい":["o","o","kii"],"小さい":["chi","i","sai"]
   };
   var MAXWLEN = (function () {
     var m = 0;
@@ -334,8 +335,7 @@
       if (t.k === "gem") { gem = true; return; }
       if (t.k === "n") {
         gem = false;
-        if (syls.length) syls[syls.length - 1] += "n";
-        else syls.push("n");
+        syls.push("n");
         return;
       }
       if (t.k === "long") {
@@ -367,7 +367,15 @@
     }
     function pushWord(arr) {
       if (gem) { gem = false; syls.push("tsu"); }
-      for (var i = 0; i < arr.length; i++) syls.push(arr[i]);
+      for (var i = 0; i < arr.length; i++) {
+        var s = arr[i];
+        if (s.length > 1 && s.charAt(s.length - 1) === "n") {
+          syls.push(s.slice(0, -1));
+          syls.push("n");
+        } else {
+          syls.push(s);
+        }
+      }
       noVM = true;
     }
     function flush() {
